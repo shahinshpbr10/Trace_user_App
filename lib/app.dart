@@ -5,6 +5,8 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 import 'package:tracebusapp/view/splashscreen/splash_screen.dart';
 
+import 'config/light_and _dark.dart';
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -26,7 +28,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return  MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => null,),
+        ChangeNotifierProvider(create: (context) => ColorNotifier(),),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
