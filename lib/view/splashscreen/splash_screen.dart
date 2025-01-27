@@ -1,4 +1,3 @@
-// ignore_for_file: camel_case_types, depend_on_referenced_packages, file_names
 
 import 'dart:async';
 
