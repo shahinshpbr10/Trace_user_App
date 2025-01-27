@@ -43,7 +43,13 @@ class _Splase_ScreenState extends State<Splase_Screen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image(image: AssetImage('assets/SplaseScreenImage.png'),height: 150,width: 150),
-            Text('ProZigzagBus',style: TextStyle(color: Color(0xff7D2AFF),fontSize: 25,fontFamily: 'SofiaProBold'),),
+            Text('Trace',style: TextStyle(color: Color(0xff7D2AFF),fontSize: 25,fontFamily: 'SofiaProBold'),),
+            SizedBox(height: 8,),
+            Text(
+              "Manage • Track • Travel",
+              style: TextStyle(color: Color(0xff7D2AFF),fontSize: 15,fontFamily: 'SofiaProBold'),
+            ),
+
           ],
         ),
       ),
