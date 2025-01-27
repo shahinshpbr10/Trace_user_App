@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tracebusapp/view/auth/login/login_page.dart';
 
 
 
@@ -24,11 +25,11 @@ class _Splase_ScreenState extends State<Splase_Screen> {
     getDataFromLocal().then((value) {
       if(isLogin!){
         Timer(const Duration(seconds: 3), () {
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>   const Placeholder(),), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>   const Login_Screen(),), (route) => false);
         });
       } else{
         Timer(const Duration(seconds: 3), () {
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>  const Placeholder(),), (route) => false);
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>  const Login_Screen(),), (route) => false);
         });
       }
     });
