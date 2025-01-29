@@ -45,6 +45,7 @@ class _Login_ScreenState extends State<Login_Screen> {
     'Discover new places, one bus ride after another.',
   ];
 
+  // **LOGIN WITH FIREBASE EMAIL & PASSWORD**
   Future<void> loginWithFirebase(String email, String password) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -52,7 +53,7 @@ class _Login_ScreenState extends State<Login_Screen> {
         password: password,
       );
       Fluttertoast.showToast(msg: "Login successful!", backgroundColor: Colors.green);
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Placeholder(),), (route) => false,);
+      Navigator.pushReplacementNamed(context, "/home");
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message ?? "Login failed", backgroundColor: Colors.red);
     }
@@ -66,9 +67,7 @@ class _Login_ScreenState extends State<Login_Screen> {
         password: password,
       );
 
-      // Delay before writing to Firestore
-      await Future.delayed(Duration(seconds: 2));
-
+      // Save user details to Firestore under "bus_passengers"
       await FirebaseFirestore.instance.collection("bus_passengers").doc(userCredential.user!.uid).set({
         "name": name,
         "email": email,
@@ -77,13 +76,11 @@ class _Login_ScreenState extends State<Login_Screen> {
       });
 
       Fluttertoast.showToast(msg: "Signup successful!", backgroundColor: Colors.green);
-
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Placeholder(),), (route) => false,);
+      Navigator.pushReplacementNamed(context, "/home");
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message ?? "Signup failed", backgroundColor: Colors.red);
     }
   }
-
 
   // **RESET PASSWORD WITH FIREBASE**
   Future<void> resetPassword(String email) async {
@@ -122,7 +119,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 6),
-                    const Text('Signin with your E-mail.'),
+                    const Text('Signup with your email and password.'),
                     const SizedBox(height: 20),
                     TextField(
                       controller: emailController,
@@ -144,7 +141,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          loginWithFirebase(mobileController.text, passwordController.text);
+                          loginWithFirebase(emailController.text, passwordController.text);
                         },
                         child: const Text('Login'),
                       ),
@@ -153,7 +150,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                     Center(
                       child: InkWell(
                         onTap: () {
-                          resetPassword(mobileController.text);
+                          resetPassword(emailController.text);
                         },
                         child: const Text(
                           'Forgot Password?',
@@ -173,13 +170,11 @@ class _Login_ScreenState extends State<Login_Screen> {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Text("Create your Account",style:TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                      ],
+                                    const Text(
+                                      "Create your Account",
+                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                     ),
-                                    SizedBox(height: 10,),
+                                    const SizedBox(height: 10),
                                     TextField(
                                       controller: nameController,
                                       decoration: const InputDecoration(
@@ -201,8 +196,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                                       decoration: InputDecoration(
                                         hintText: 'Phone Number',
                                         enabledBorder: OutlineInputBorder(
-                                          borderSide:
-                                          BorderSide(color: Colors.grey.withOpacity(0.4)),
+                                          borderSide: BorderSide(color: Colors.grey.withOpacity(0.4)),
                                           borderRadius: BorderRadius.circular(10),
                                         ),
                                         focusedBorder: OutlineInputBorder(
@@ -221,8 +215,6 @@ class _Login_ScreenState extends State<Login_Screen> {
                                       ),
                                     ),
                                     const SizedBox(height: 10),
-
-                                    const SizedBox(height: 10),
                                     ElevatedButton(
                                       onPressed: () {
                                         signUpWithFirebase(
@@ -234,7 +226,6 @@ class _Login_ScreenState extends State<Login_Screen> {
                                       },
                                       child: const Text('SIGN UP'),
                                     ),
-
                                   ],
                                 ),
                               );
@@ -269,31 +260,7 @@ class _Login_ScreenState extends State<Login_Screen> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             CarouselSlider(
-              items: [
-                for (int i = 0; i < lottie12.length; i++)
-                  Column(
-                    children: [
-                      Lottie.asset(lottie12[i], height: 200),
-                      const SizedBox(height: 30),
-                      Text(
-                        title[i],
-                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 5),
-                      Container(
-                        height: 2,
-                        width: 70,
-                        color: Colors.blue,
-                      ),
-                      const SizedBox(height: 15),
-                      Text(
-                        description[i],
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 13, color: Colors.grey),
-                      ),
-                    ],
-                  ),
-              ],
+              items: title.map((t) => Text(t)).toList(),
               options: CarouselOptions(
                 height: 345,
                 autoPlay: true,

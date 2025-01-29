@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "416556984214",
+    "project_id": "traceproject-d2bfb",
+    "storage_bucket": "traceproject-d2bfb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:416556984214:android:487008a7bcabd55e9b5fb7",
+        "android_client_info": {
+          "package_name": "com.quadvare.trace.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCulO3gpPAfO1sxML3pGz1MakiKO2HoKYk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
