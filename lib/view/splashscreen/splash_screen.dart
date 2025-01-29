@@ -3,7 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tracebusapp/view/auth/login/login_page.dart';
+import 'package:tracebusapp/view/auth/login/login_and_signup_page.dart';
 
 
 

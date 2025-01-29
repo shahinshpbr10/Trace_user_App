@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:lottie/lottie.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tracebusapp/view/bottomnavbar/bottomnavbar.dart';
 
 class Login_Screen extends StatefulWidget {
   const Login_Screen({super.key});
@@ -69,7 +70,7 @@ class _Login_ScreenState extends State<Login_Screen> {
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => Placeholder()), // Replace with your actual home screen
+        MaterialPageRoute(builder: (context) => Bottom_Navigation()), // Replace with your actual home screen
             (route) => false,
       );
 
@@ -125,7 +126,7 @@ class _Login_ScreenState extends State<Login_Screen> {
       if (!mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => Placeholder()), // Replace with your actual home screen
+        MaterialPageRoute(builder: (context) => Bottom_Navigation()), // Replace with your actual home screen
             (route) => false,
       );
 
