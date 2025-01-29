@@ -17,10 +17,9 @@ class _Login_ScreenState extends State<Login_Screen> {
   bool referralcode = false;
   String ccode = "";
 
-  TextEditingController mobileController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
   TextEditingController mobileController1 = TextEditingController();
   TextEditingController passwordController1 = TextEditingController();
 
@@ -45,16 +44,64 @@ class _Login_ScreenState extends State<Login_Screen> {
     'Discover new places, one bus ride after another.',
   ];
 
+  // **LOGIN WITH FIREBASE**
   Future<void> loginWithFirebase(String email, String password) async {
     try {
+      if (email.isEmpty || password.isEmpty) {
+        Fluttertoast.showToast(
+          msg: "Email and Password cannot be empty.",
+          backgroundColor: Colors.red,
+        );
+        return;
+      }
+
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
+        email: email.trim(),
         password: password,
       );
-      Fluttertoast.showToast(msg: "Login successful!", backgroundColor: Colors.green);
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Placeholder(),), (route) => false,);
+
+      Fluttertoast.showToast(
+        msg: "Login successful!",
+        backgroundColor: Colors.green,
+      );
+
+      if (!mounted) return;
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => Placeholder()), // Replace with your actual home screen
+            (route) => false,
+      );
+
     } on FirebaseAuthException catch (e) {
-      Fluttertoast.showToast(msg: e.message ?? "Login failed", backgroundColor: Colors.red);
+      String errorMessage = "Login failed";
+
+      print("Firebase Login Error Code: ${e.code}");
+
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = "No user found for this email.";
+          break;
+        case 'wrong-password':
+          errorMessage = "Incorrect password. Please try again.";
+          break;
+        case 'invalid-email':
+          errorMessage = "Invalid email format.";
+          break;
+        case 'user-disabled':
+          errorMessage = "This user account has been disabled.";
+          break;
+        case 'too-many-requests':
+          errorMessage = "Too many failed attempts. Try again later.";
+          break;
+        default:
+          errorMessage = e.message ?? "An unknown error occurred.";
+      }
+
+      Fluttertoast.showToast(msg: errorMessage, backgroundColor: Colors.red);
+    } catch (e) {
+      print("Unexpected Login Error: $e");
+      Fluttertoast.showToast(msg: "An unexpected error occurred", backgroundColor: Colors.red);
     }
   }
 
@@ -66,9 +113,6 @@ class _Login_ScreenState extends State<Login_Screen> {
         password: password,
       );
 
-      // Delay before writing to Firestore
-      await Future.delayed(Duration(seconds: 2));
-
       await FirebaseFirestore.instance.collection("bus_passengers").doc(userCredential.user!.uid).set({
         "name": name,
         "email": email,
@@ -78,12 +122,17 @@ class _Login_ScreenState extends State<Login_Screen> {
 
       Fluttertoast.showToast(msg: "Signup successful!", backgroundColor: Colors.green);
 
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Placeholder(),), (route) => false,);
+      if (!mounted) return;
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => Placeholder()), // Replace with your actual home screen
+            (route) => false,
+      );
+
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message ?? "Signup failed", backgroundColor: Colors.red);
     }
   }
-
 
   // **RESET PASSWORD WITH FIREBASE**
   Future<void> resetPassword(String email) async {
@@ -91,9 +140,10 @@ class _Login_ScreenState extends State<Login_Screen> {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       Fluttertoast.showToast(msg: "Password reset email sent!", backgroundColor: Colors.green);
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString(), backgroundColor: Colors.red);
+      Fluttertoast.showToast(msg: "Error: ${e.toString()}", backgroundColor: Colors.red);
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +194,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          loginWithFirebase(mobileController.text, passwordController.text);
+                          loginWithFirebase(emailController.text, passwordController.text);
                         },
                         child: const Text('Login'),
                       ),
@@ -153,7 +203,7 @@ class _Login_ScreenState extends State<Login_Screen> {
                     Center(
                       child: InkWell(
                         onTap: () {
-                          resetPassword(mobileController.text);
+                          resetPassword(emailController.text);
                         },
                         child: const Text(
                           'Forgot Password?',
