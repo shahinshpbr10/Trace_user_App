@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:tracebusapp/view/home/view/home_page.dart';
+import 'package:tracebusapp/view/home/view/payment_history_page.dart';
+import 'package:tracebusapp/view/my_account_page/accountpage.dart';
 
 import '../../config/light_and _dark.dart';
 import '../home/controller/home_controller.dart';
@@ -22,12 +25,9 @@ class _Bottom_NavigationState extends State<Bottom_Navigation> {
 
   // int _selectedIndex = 0;
   static const List _widgetOptions = [
-    // Home_Screen(),
-    // Booking_Screen(),
-    // Menu_Screen(),
-    // My_Wallet(),
-    // MyAccount_Screen(),
-    Placeholder(),  Placeholder() , Placeholder(),  Placeholder(),  Placeholder(),
+    HomePage(),
+
+  PaymentHistoryPage(),  MyAccountScreen(),
   ];
   HomeController homeController = Get.put(HomeController());
 
@@ -62,38 +62,19 @@ class _Bottom_NavigationState extends State<Bottom_Navigation> {
                   ),
                   label: 'Home'.tr,
                 ),
-                BottomNavigationBarItem(
-                  icon: homeController.selectpage == 1 ?  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Image(image: const AssetImage('assets/Bottom Fill Fill Ticket.png'),height: 24,width: 24,color: notifier.theamcolorelight),
-                  ):const Padding(
-                    padding: EdgeInsets.only(bottom: 5),
-                    child: Image(image: AssetImage('assets/Bottom Fill Ticket.png'),height: 22,width: 22,),
-                  ),
-                  label: 'My Ticket'.tr,
-                ),
+
                 BottomNavigationBarItem(
                   icon: homeController.selectpage == 2 ?  Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Image(image: const AssetImage('assets/location-pin.png'),height: 24,width: 24,color: notifier.theamcolorelight),
-                  ):const Padding(
-                    padding: EdgeInsets.only(bottom: 5),
-                    child: Image(image: AssetImage('assets/location-pin.png'),height: 24,width: 24,color: Colors.grey),
-                  ),
-                  label: 'Map'.tr,
-                ),
-                BottomNavigationBarItem(
-                  icon: homeController.selectpage == 3 ?  Padding(
                     padding: const EdgeInsets.only(bottom: 5),
                     child: Image(image: const AssetImage('assets/Bottom Fill Wallet.png'),height: 19,width: 19,color: notifier.theamcolorelight),
                   ):const Padding(
                     padding: EdgeInsets.only(bottom: 5),
                     child: Image(image: AssetImage('assets/Bottom Wallet.png'),height: 22,width: 22,),
                   ),
-                  label: 'My Wallet'.tr,
+                  label: 'My Payments'.tr,
                 ),
                 BottomNavigationBarItem(
-                  icon:homeController.selectpage == 4 ?  Padding(
+                  icon:homeController.selectpage == 3 ?  Padding(
                     padding: const EdgeInsets.only(bottom: 5),
                     child: Image(image: const AssetImage('assets/Bottom Fill Account.png'),height: 20,width: 20,color: notifier.theamcolorelight),
                   ):const Padding(
